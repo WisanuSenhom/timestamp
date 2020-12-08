@@ -14,6 +14,7 @@
     <center>
     <h1>Check-In/Out Log</h1>
 <p>👉Click the button to check-in or check-out with your coordinates.</p>
+      <img id="pictureUrl">
  <script>
 function ShowAndHide() {
     var x = document.getElementById('SectionName');
@@ -67,6 +68,13 @@ placeholder="หมายเหตุ/อื่นๆระบุ" required="" m
 window.onload = function() {
   initializeLiff('1654797991-wWYODmOq');
 }
+  
+function getProfile(){
+       liff.getProfile().then(function(profile) {
+            // var lname = profile.displayName;
+      document.getElementById("pictureUrl").style.display = "block"
+      document.getElementById("pictureUrl").src = profile.pictureUrl
+       }
 
 const xurl = "https://script.google.com/macros/s/AKfycbz1Qj2oNENxcyBwZTafPlfDqP0DxhGLA6uyl7kksvslaUAN2oY/exec";
 
