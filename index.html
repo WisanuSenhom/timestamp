@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+    <title>รพ.สต.หนองทุ่ม</title>
+  </head>
+  <body>
+    <center>
+    <h1>Check-In/Out Log</h1>
+<p>👉Click the button to check-in or check-out with your coordinates.</p>
+ <script>
+function ShowAndHide() {
+    var x = document.getElementById('SectionName');
+    if (x.style.display == 'none') {
+        x.style.display = 'block';
+    } else {
+        x.style.display = 'none';
+    }
+}
+</script>
+
+<button type="button" class="btn btn-info"  onclick="ShowAndHide()">เพิ่มเติม</button>
+
+<div id="SectionName" style="display:none">
+
+
+<select id="typea">
+  <option value="">--เลือกประเภท--</option>
+  <option value="ไปราชการ">ไปราชการ</option>
+  <option value="ลา">ลา</option>
+  <option value="มาช่วยราชการ">มาช่วยราชการ</option>
+</select>
+  <br>
+  <select id="typeb">
+  <option value="">--เลือกประเภทย่อย--</option>
+  <option value="ประชุม">ประชุม</option>
+  <option value="อบรม">อบรม</option>
+  <option value="ช่วยราชการ">ช่วยราชการ</option>
+  <option value="ลาป่วย">ลาป่วย</option>
+  <option value="ลากิจ">ลากิจ</option>
+  <option value="ลาพักผ่อน">ลาพักผ่อน</option>
+  <option value="อื่นๆ">อื่นๆ</option>
+</select> <br>
+<textarea id="nte" name="nte" rows="2" cols="35"
+placeholder="หมายเหตุ/อื่นๆระบุ" required="" maxlength="255"  warp="soft">
+</textarea><br>
+<a href="https://forms.gle/5amHKzQLY6XUTh7V8" target="_blank">หากจะลากรุณากดที่นี้เพื่อบันทึกคำขอ</a>
+</div>     
+
+ <br><br>     
+      
+<div id="cin" class="invisible"><button type="button" class="btn btn-success" onclick="getLocation()">Check-In</button></div>
+<div id="cout" class="invisible"><button id="cout" type="button" class="btn btn-danger" onclick="getLocationOut()">Check-Out</button></div>
+<br> 
+<p> <b>📢คำแนะนำ</b> <br>
+      หากไปราชการ อาทิ ประชุม อบรม สัมมนา ช่วยราชการ อื่นๆ ให้กดปุ่มเพิ่มเติมแล้วเลือกรายการ แล้วกด Check In ด้วยนะครับ เพื่อเป็นการเก็บข้อมูลสำหรับจัดทำรายงาน👌</p>
+<p id="demo"></p>
+</center>
+
+<script>
+window.onload = function() {
+  initializeLiff('1654797991-wWYODmOq');
+}
+
+const xurl = "https://script.google.com/macros/s/AKfycbz1Qj2oNENxcyBwZTafPlfDqP0DxhGLA6uyl7kksvslaUAN2oY/exec";
+
+function checks(){
+
+var today = new Date();
+today.toLocaleString('th-TH', { timeZone: 'Asia/Bangkok' })
+var hh = today.getHours();
+var mm = today.getMinutes(); 
+
+        if(hh <= 14){
+          document.getElementById("cin").classList.remove('invisible');
+        }else if(hh >= 16){
+          document.getElementById("cout").classList.remove('invisible');
+            }else{
+alert("ไม่สามารถเช็คอิน/เอาท์ได้ในช่วงเวลา 14.00-16.00 "+hh+":"+mm);
+liff.closeWindow();  
+            }
+}
+
+
+function initializeLiff(myLiffId) {
+    liff
+        .init({
+            liffId: myLiffId
+        })
+        .then(() => {
+            checks();
+        })
+        .catch((err) => {
+        });
+}
+
+var x = document.getElementById("demo");
+
+function getLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(showPosition);
+  } else { 
+    x.innerHTML = "Geolocation is not supported by this browser.";
+  }
+}
+
+function showPosition(position) {
+var sel = document.getElementById("typea").value;
+var sels = document.getElementById("typeb").value;
+var ntex = document.getElementById("nte").value;
+     liff.getProfile().then(function(profile) {
+            var uid = profile.userId;
+            var uname = profile.displayName;
+        var xos = liff.getOS();
+  x.innerHTML = "Lat: " + position.coords.latitude + 
+  "<br>Long: " + position.coords.longitude+ 
+  "<br>userId: " + uid+ 
+  "<br>displayName: " + uname+
+  "<br>your OS: " + xos;
+var xmlhttp = new XMLHttpRequest();
+        var theUrl = xurl+"?ctype=In&sel="+sel+"&sels="+sels+"&ntex="+ntex+"&xos="+xos+"&user="+uid+"&name="+uname+"&lat="+position.coords.latitude+"&long="+position.coords.longitude;
+        xmlhttp.open('GET', theUrl);
+        xmlhttp.send();
+            xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            var jsonResponse = JSON.parse(this.responseText);
+        }
+        alert(jsonResponse.desc);
+        liff.closeWindow();
+      }});  
+}
+
+
+
+///////////////////////////////
+
+
+function getLocationOut() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(showPositionOut);
+  } else { 
+    x.innerHTML = "Geolocation is not supported by this browser.";
+  }
+}
+
+function showPositionOut(position) {
+var sel = document.getElementById("typea").value;
+var sels = document.getElementById("typeb").value;
+var ntex = document.getElementById("nte").value;
+     liff.getProfile().then(function(profile) {
+            var uid = profile.userId;
+            var uname = profile.displayName;
+        var xos = liff.getOS();
+  x.innerHTML = "Lat: " + position.coords.latitude + 
+  "<br>Long: " + position.coords.longitude+ 
+  "<br>userId: " + uid+ 
+  "<br>displayName: " + uname+
+  "<br>your OS: " + xos;
+var xmlhttp = new XMLHttpRequest();
+        var theUrl = xurl+"?ctype=Out&sel="+sel+"&sels="+sels+"&ntex="+ntex+"&xos="+xos+"&user="+uid+"&name="+uname+"&lat="+position.coords.latitude+"&long="+position.coords.longitude;
+        xmlhttp.open('GET', theUrl);
+        xmlhttp.send();
+            xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            var jsonResponse = JSON.parse(this.responseText);
+        }
+        alert(jsonResponse.desc);
+        liff.closeWindow();
+      }});  
+}
+
+
+
+</script>
+
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2.1/sdk.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+  </body>
+</html>
