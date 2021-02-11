@@ -103,6 +103,7 @@ function initializeLiff(myLiffId) {
 var x = document.getElementById("demo");
 
 function getLocation() {
+  document.getElementById("getLocation").textContent = "กรุณารอสักครู่...";
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(showPosition);
   } else { 
