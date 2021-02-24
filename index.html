@@ -25,9 +25,6 @@
 window.onload = function() {
   initializeLiff('1654797991-nolGabGZ');
 }
-
-const xurl = "https://script.google.com/macros/s/AKfycbzLxEvB6tq3ymW89ygr7ss_3Nbd5s0Lo7fDJauJ32-dIcr3Hjny/exec";
-
 function initializeLiff(myLiffId) {
     liff
         .init({
@@ -65,16 +62,6 @@ function showPosition(position) {
     <button type="button" class="btn btn-primary btn-lg btn-block" onclick="getLocation()">ค้นหา/ยกเลิกการเฝ้าระวัง 14 วัน</button>
 <br>
 <button type="button" class="btn btn-secondary btn-lg btn-block" onclick="getLocation2()">แก้ไขข้อมูลส่งต่อจากด่านคัดกรอง</button>;
-var xmlhttp = new XMLHttpRequest();
-        var theUrl = xurl+"?ctype=In&status="+ustatus+"&email="+uemail+"&pic="+upic+&xos="+xos+"&user="+uid+"&name="+uname+"&lat="+position.coords.latitude+"&long="+position.coords.longitude;
-        xmlhttp.open('GET', theUrl);
-        xmlhttp.send();
-            xmlhttp.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-            var jsonResponse = JSON.parse(this.responseText);
-        }
-        alert(jsonResponse.desc);
-        liff.closeWindow();
       }});  
 }
 
