@@ -58,11 +58,13 @@ function showPosition(position) {
        var uemail = liff.getDecodedIDToken().email;
        var upic = profile.pictureUrl;
         var xos = liff.getOS();
-  x.innerHTML = "Lat: " + position.coords.latitude + 
-  "<br>Long: " + position.coords.longitude+ 
-  "<br>userId: " + uid+ 
-  "<br>displayName: " + uname+
-  "<br>your OS: " + xos;
+  x.innerHTML = "<br>สวัสดีคุณ : " + uname+ "ตำแหน่งของคุณ : "+"https://www.google.com/maps?q=" + position.coords.latitude + 
+  "," + position.coords.longitude+ 
+  "<br>your OS: " + xos+
+    <br>
+    <button type="button" class="btn btn-primary btn-lg btn-block" onclick="getLocation()">ค้นหา/ยกเลิกการเฝ้าระวัง 14 วัน</button>
+<br>
+<button type="button" class="btn btn-secondary btn-lg btn-block" onclick="getLocation2()">แก้ไขข้อมูลส่งต่อจากด่านคัดกรอง</button>;
 var xmlhttp = new XMLHttpRequest();
         var theUrl = xurl+"?ctype=In&status="+ustatus+"&email="+uemail+"&pic="+upic+&xos="+xos+"&user="+uid+"&name="+uname+"&lat="+position.coords.latitude+"&long="+position.coords.longitude;
         xmlhttp.open('GET', theUrl);
